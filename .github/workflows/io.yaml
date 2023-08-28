@@ -1,23 +1,19 @@
 name: Github Actions Demo
 on: push
-
 jobs:
   io:
     runs-on: ubuntu-latest
-
     steps:
-      - name: hello
+      - name: set-var
         id: set-var
         shell: python
         run: |
           import os
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             print(f'VAL=true', file = f)
-
       - name: run python script
         run: |
           pip install -r requirements.txt
           python ci.py
-
       - name: print value
         run: echo "the value is ${{ steps.set-var.outputs.VAL }}"
