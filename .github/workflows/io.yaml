@@ -1,4 +1,4 @@
-name: Github Actions Demo
+name: IO
 on: push
 jobs:
   io:
@@ -11,9 +11,5 @@ jobs:
           import os
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             print(f'VAL=true', file = f)
-      - name: run python script
-        run: |
-          pip install -r requirements.txt
-          python ci.py
       - name: print value
         run: echo "the value is ${{ steps.set-var.outputs.VAL }}"
