@@ -28,6 +28,14 @@ jobs:
         owner,repo = os.environ['REPO'].split('/')
         api = GhApi(owner=owner, repo=repo)
         api.issues.create_comment(os.environ['NUMBER'], "Hi! I'm making a comment with `ghapi` in Actions!")
+
+    - name: Add a label # adding labels for PR
+      shell: python
+      run: |
+        import os
+        from ghapi.core import GhApi
+        owner,repo = os.environ['REPO'].split('/')
+        api = GhApi(owner=owner, repo=repo)
         api.issues.add_labels(4, labels = ['wandb demo', 'hello', 'test'])
       env:
         NUMBER: ${{ github.event.number }}
