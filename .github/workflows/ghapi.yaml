@@ -31,7 +31,7 @@ jobs:
 
     - name: Add a label # adding labels for PR
       shell: python
-      run: api.issues.add_labels(4, labels = ['wandb demo', 'hello', 'test'])
+      run: api.issues.add_labels(6, labels = ['wandb demo', 'hello', 'test'])
       env:
         NUMBER: ${{ github.event.number }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
