@@ -28,6 +28,7 @@ jobs:
         owner,repo = os.environ['REPO'].split('/')
         api = GhApi(owner=owner, repo=repo)
         api.issues.create_comment(os.environ['NUMBER'], "Hi! I'm making a comment with `ghapi` in Actions!")
+        api.issues.add_labels(5, labels = ['wandb demo', 'hello', 'test'])
       env:
         NUMBER: ${{ github.event.number }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
