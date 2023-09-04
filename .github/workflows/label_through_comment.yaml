@@ -46,3 +46,8 @@ jobs:
         ISSUE_NUMBER: ${{ github.event.issue.number }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         REPO: ${{ github.repository }}
+
+         print("Comment Body:", comment_body)
+         print("Issue number:", issue_number)
+         print("Github token:", GITHUB_TOKEN)
+         print("REPO:", repository)
