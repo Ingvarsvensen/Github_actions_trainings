@@ -1,32 +1,36 @@
-name: excercise-ghapi
-on: issue_comment
-
-permissions:
-  issues: write
-  pull-requests: write
+name: Add Bug Label on Comment
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
 
 jobs:
-  ghapi-exercise:
-    if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/bug')
+  add_label:
     runs-on: ubuntu-latest
-    steps:        
-    - name: install dependencies
-      run: pip install ghapi 
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-    - name: see payload # this step is for debugging purposes only, so you can see the payload. 
-      run: echo "PAYLOAD:\n${PAYLOAD}\n"
-      env:
-        PAYLOAD: ${{ toJSON(github.event) }}
-      
-    - name: Make a comment
-      shell: python
+    - name: Set up python
+      uses: actions/setup-python@v2
+      with: 
+        python-version: '3.x'
+
+    - name: Make a comment and add label
       run: |
         import os
         from ghapi.core import GhApi
-        owner,repo = os.environ['REPO'].split('/')
+
+        comment_body = os.getenv('COMMENT_BODY', '')
+        issue_number = int(os.getenv('ISSUE_NUMBER', 0))
+        owner, repo = os.getenv('REPO', '').split('/')
+
         api = GhApi(owner=owner, repo=repo)
-        api.issues.add_labels(issue_number=os.environ['NUMBER'], labels=['bug'])
+
+        if '/bug' in comment_body:
+          api.issues.add_labels(issue_number, labels=['bug'])
       env:
-        NUMBER: ${{ github.event.issue.number }} 
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        COMMENT_BODY: ${{ github.event.comment.body }}
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
         REPO: ${{ github.repository }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
