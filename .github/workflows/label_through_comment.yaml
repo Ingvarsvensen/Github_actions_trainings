@@ -1,4 +1,4 @@
-name: Add Label on Comment
+name: excercise-ghapi
 on: issue_comment
 
 permissions:
@@ -6,7 +6,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  add_comment_on_pr:
+  ghapi-exercise:
     if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/bug')
     runs-on: ubuntu-latest
     steps:        
