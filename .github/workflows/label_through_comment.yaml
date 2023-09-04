@@ -30,17 +30,18 @@ jobs:
     - name: Make a comment and add label
       run: |
         import os
+      try:
         from ghapi.core import GhApi
-
         comment_body = os.getenv('COMMENT_BODY', '')
         issue_number = int(os.getenv('ISSUE_NUMBER', 0))
         owner, repo = os.environ['REPO'].split('/')
-
+      print(f"Debug Info: Comment Body = {comment_body}, Issue Number = {issue_number}, Owner = {owner}, Repo = {repo}")
         api = GhApi(owner=owner, repo=repo, token=os.getenv('GITHUB_TOKEN'))
-
         if '/bug' in comment_body:
-          api.issues.add_labels(issue_number, labels=['bug'])
-
+            api.issues.add_labels(issue_number, labels=['bug'])
+      except Exception as e:
+        print(f"An error occurred: {e}")
+      
       env:
         COMMENT_BODY: ${{ github.event.comment.body }}
         ISSUE_NUMBER: ${{ github.event.issue.number }}
